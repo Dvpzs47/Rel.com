@@ -17,7 +17,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CleanArchitecture.Web\Rel.Web.csproj" />
+    <ProjectReference Include="..\..\src\Rel.Web\Rel.Web.csproj" />
   </ItemGroup>
 
 </Project>
