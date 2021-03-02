@@ -3,6 +3,9 @@ using Rel.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
 
 namespace Rel.Infrastructure.Data
 {
@@ -20,9 +23,9 @@ namespace Rel.Infrastructure.Data
             return _dbContext.Set<T>().SingleOrDefault(e => e.Id == id);
         }
 
-        public List<T> List<T>() where T : BaseEntity
+        public Task<List<T>> ListAsync<T>() where T : BaseEntity
         {
-            return _dbContext.Set<T>().ToList();
+            return _dbContext.Set<T>().ToListAsync();
         }
 
         public T Add<T>(T entity) where T : BaseEntity
@@ -44,5 +47,18 @@ namespace Rel.Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
+        public Task<List<T>> ListAsync<T>(ISpecification<T> spec) where T : BaseEntity//, IAggregateRoot
+        {
+            var specificationResult = ApplySpecification(spec);
+            return specificationResult.ToListAsync();
+        }
+
+        private IQueryable<T> ApplySpecification<T>(ISpecification<T> spec) where T : BaseEntity
+        {
+            var evaluator = new SpecificationEvaluator<T>();
+            return evaluator.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+        }
     }
 }
+
