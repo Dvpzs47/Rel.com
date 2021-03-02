@@ -4,6 +4,7 @@ using Rel.SharedKernel.Interfaces;
 using Rel.Web.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Rel.Web.Controllers
 {
@@ -16,9 +17,9 @@ namespace Rel.Web.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var items = _repository.List<ToDoItem>()
+            var items = (await _repository.ListAsync<ToDoItem>())
                             .Select(ToDoItemDTO.FromToDoItem);
             return View(items);
         }

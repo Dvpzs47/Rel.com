@@ -14,5 +14,10 @@ namespace Rel.Core.Entities
             IsDone = true;
             Events.Add(new ToDoItemCompletedEvent(this));
         }
+        public override string ToString()
+        {
+            string status = IsDone ? "Done!" : "NotDone";
+            return $"{ Id } : Status: { status } - { Title } - { Description }"; 
+        }
     }
 }

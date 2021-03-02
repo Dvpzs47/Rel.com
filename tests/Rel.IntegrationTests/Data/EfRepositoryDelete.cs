@@ -1,6 +1,7 @@
 ﻿using Rel.Core.Entities;
 using Rel.UnitTests;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Rel.IntegrationTests.Data
@@ -8,7 +9,7 @@ namespace Rel.IntegrationTests.Data
     public class EfRepositoryDelete : BaseEfRepoTestFixture
     {
         [Fact]
-        public void DeletesItemAfterAddingIt()
+        public async Task DeletesItemAfterAddingIt()
         {
             // add an item
             var repository = GetRepository();
@@ -20,7 +21,7 @@ namespace Rel.IntegrationTests.Data
             repository.Delete(item);
 
             // verify it's no longer there
-            Assert.DoesNotContain(repository.List<ToDoItem>(),
+            Assert.DoesNotContain(await repository.ListAsync<ToDoItem>(),
                 i => i.Title == initialTitle);
         }
     }
