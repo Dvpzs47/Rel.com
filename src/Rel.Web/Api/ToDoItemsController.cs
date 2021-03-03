@@ -25,15 +25,7 @@ namespace Rel.Web.Api
                             .Select(ToDoItemDTO.FromToDoItem);
             return Ok(items);
         }
-        /*
-        // GET: api/ToDoItems
-        [HttpGet("{id:int}")]
-        public IActionResult GetById(int id)
-        {
-            var item = ToDoItemDTO.FromToDoItem(_repository.GetById<ToDoItem>(id));
-            return Ok(item);
-        }
-        */
+
         // GET: api/ToDoItems
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
