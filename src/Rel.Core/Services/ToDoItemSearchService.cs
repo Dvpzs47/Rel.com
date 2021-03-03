@@ -19,7 +19,7 @@ namespace Rel.Core.Services
         {
             _repository = repository;
         }
-        public async Task<Result<List<ToDoItem>>> GetAllIncompleteItems(string searchString)
+        public async Task<Result<List<ToDoItem>>> GetAllIncompleteItemsAsync(string searchString)
         {
             if (string.IsNullOrEmpty(searchString))
             {
@@ -33,12 +33,23 @@ namespace Rel.Core.Services
             }
 
             var incompleteSpec = new IncompleteItemsSpecification();
-            var items = await _repository.ListAsync<ToDoItem>(incompleteSpec);
 
-            return new Result<List<ToDoItem>>(items);
+            try
+            {
+                var items = await _repository.ListAsync(incompleteSpec);
+                return new Result<List<ToDoItem>>(items);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<ToDoItem>>.Error(new[] { ex.Message });
+            }
+
+            //var items = await _repository.ListAsync<ToDoItem>(incompleteSpec);
+
+            //return new Result<List<ToDoItem>>(items);
         }
 
-        public async Task<Result<ToDoItem>> GetNextIncompleteItem()
+        public async Task<Result<ToDoItem>> GetNextIncompleteItemAsync()
         {
             var incompleteSpec = new IncompleteItemsSpecification();
             var items = await _repository.ListAsync(incompleteSpec);

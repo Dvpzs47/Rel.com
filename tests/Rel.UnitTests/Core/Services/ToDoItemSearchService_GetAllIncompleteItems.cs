@@ -21,8 +21,35 @@ namespace Rel.UnitTests.Core.Services
             var repo = new Mock<IRepository>();
             var service = new ToDoItemSearchService(repo.Object);
 
-            var result = await service.GetAllIncompleteItems(null);
+            var result = await service.GetAllIncompleteItemsAsync(null);
             Assert.Equal(Ardalis.Result.ResultStatus.Invalid,
+                result.Status);
+            Assert.Equal("searchString is required.", result.ValidationErrors.First().ErrorMessage);
+        }
+
+        [Fact]
+        public async Task ReturnsErrorGivenDataAccessException()
+        {
+            //string expectedErrorMessage = "Database not there.";
+            var repo = new Mock<IRepository>();
+            var service = new ToDoItemSearchService(repo.Object);
+            repo.Setup(r => r.ListAsync(It.IsAny<ISpecification<ToDoItem>>()))
+                .ThrowsAsync(new System.Exception(null));
+
+            var result = await service.GetAllIncompleteItemsAsync("Database not there.");
+            Assert.Equal(Ardalis.Result.ResultStatus.Error,
+                result.Status);
+            //Assert.Equal(expectedErrorMessage, result.Errors.First());
+        }
+
+        [Fact]
+        public async Task ReturnsListGivenSearchString()
+        {
+            var repo = new Mock<IRepository>();
+            var service = new ToDoItemSearchService(repo.Object);
+
+            var result = await service.GetAllIncompleteItemsAsync("foo");
+            Assert.Equal(Ardalis.Result.ResultStatus.Ok,
                 result.Status);
         }
 
