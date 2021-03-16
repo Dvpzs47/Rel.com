@@ -13,7 +13,7 @@ namespace Rel.Web
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
-
+            
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -31,7 +31,7 @@ namespace Rel.Web
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }
-
+            
             host.Run();
         }
 

@@ -23,7 +23,7 @@ namespace Rel.UnitTests.Core.Services
             repo.Setup(r => r.ListAsync(It.IsAny<ISpecification<ToDoItem>>()))
                 .ReturnsAsync(new List<ToDoItem>());
 
-            var result = await service.GetNextIncompleteItem();
+            var result = await service.GetNextIncompleteItemAsync();
             Assert.Equal(Ardalis.Result.ResultStatus.NotFound,
                 result.Status);
         }
@@ -37,7 +37,7 @@ namespace Rel.UnitTests.Core.Services
             repo.Setup(r => r.ListAsync(It.IsAny<ISpecification<ToDoItem>>()))
                 .ReturnsAsync(testItems);
 
-            var result = await service.GetNextIncompleteItem();
+            var result = await service.GetNextIncompleteItemAsync();
 
             Assert.Equal(testItems.First(), result.Value);
         }

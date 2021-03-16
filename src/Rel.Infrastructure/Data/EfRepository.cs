@@ -18,9 +18,9 @@ namespace Rel.Infrastructure.Data
             _dbContext = dbContext;
         }
 
-        public T GetById<T>(int id) where T : BaseEntity
+        public Task<T> GetByIdAsync<T>(int id) where T : BaseEntity
         {
-            return _dbContext.Set<T>().SingleOrDefault(e => e.Id == id);
+            return _dbContext.Set<T>().SingleOrDefaultAsync(e => e.Id == id);
         }
 
         public Task<List<T>> ListAsync<T>() where T : BaseEntity
@@ -28,24 +28,24 @@ namespace Rel.Infrastructure.Data
             return _dbContext.Set<T>().ToListAsync();
         }
 
-        public T Add<T>(T entity) where T : BaseEntity
+        public async Task<T> AddAsync<T>(T entity) where T : BaseEntity
         {
-            _dbContext.Set<T>().Add(entity);
-            _dbContext.SaveChanges();
+            await _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
 
             return entity;
         }
 
-        public void Delete<T>(T entity) where T : BaseEntity
+        public Task DeleteAsync<T>(T entity) where T : BaseEntity
         {
             _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChangesAsync();
         }
 
-        public void Update<T>(T entity) where T : BaseEntity
+        public Task UpdateAsync<T>(T entity) where T : BaseEntity
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChangesAsync();
         }
 
         public Task<List<T>> ListAsync<T>(ISpecification<T> spec) where T : BaseEntity//, IAggregateRoot
