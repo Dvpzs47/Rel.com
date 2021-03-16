@@ -8,7 +8,7 @@ namespace Rel.SharedKernel.Interfaces
     {
         Task<T> GetByIdAsync<T>(int id) where T : BaseEntity;
         Task<List<T>> ListAsync<T>() where T : BaseEntity;
-        Task<List<T>> ListAsync<T>(ISpecification<T> spec) where T : BaseEntity;//, IAggregateRoot;
+        Task<List<T>> ListAsync<T>(ISpecification<T> spec) where T : BaseEntity;
         Task<T> AddAsync<T>(T entity) where T : BaseEntity;
         Task UpdateAsync<T>(T entity) where T : BaseEntity;
         Task DeleteAsync<T>(T entity) where T : BaseEntity;

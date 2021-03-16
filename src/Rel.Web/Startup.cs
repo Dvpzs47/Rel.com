@@ -26,7 +26,7 @@ namespace Rel.Web
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-			services.AddDbContext();
+			services.AddDbContext(Configuration);
 
 			services.AddControllersWithViews().AddNewtonsoftJson();
 			services.AddRazorPages();
