@@ -14,17 +14,19 @@ variables:
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)'  
 
 
-# Run all tests with "/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'" to generate the code coverage
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  inputs:
+    command: test
+    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+    projects: 'tests/**/*.csproj'
+    nobuild: true
 
 
 
-
-# Publish the code coverage result (summary and web site)
-# The summary allows to view the coverage percentage in the summary tab
-# The web site allows to view which lines are covered directly in Azure Pipeline
 
 
 
